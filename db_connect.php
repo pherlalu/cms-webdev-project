@@ -6,7 +6,7 @@
     Name: Steffi Ann Tanya Amper
     Created: March 17, 2024
     Updated: 
-    Description: Assignment 3 - Blogging Application
+    Description: Connect to DB
 
      ****************/
 
