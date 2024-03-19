@@ -11,6 +11,7 @@
 
 include 'navbar.php';
 
+
 ?>
 
 <!DOCTYPE html>
@@ -35,29 +36,29 @@ include 'navbar.php';
     </div>
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img width="auto" height="800" src="https://www.winnipegfreepress.com/wp-content/uploads/sites/2/2022/05/NEP8650599.jpg" class="d-block w-100" alt="First slide">
+        <img height="900" src="https://www.winnipegfreepress.com/wp-content/uploads/sites/2/2022/05/NEP8650599.jpg" class="d-block w-100" alt="First slide">
         <div class="carousel-caption d-none d-md-block text-center">
-          <h5>First slide label</h5>
-          <p>Some representative placeholder content for the first slide.</p>
+          <h1>Runner's Logic</h1>
+          <h5>I'm TIRED. I think I'll go for a Run!</h5>
           <a href="events.php">
             <button class="btn btn-primary">Find your events</button>
           </a>
         </div>
       </div>
       <div class="carousel-item">
-        <img width="auto" height="800" src="https://mybestruns.com/photo/106.jpg" class="d-block w-100" alt="Second slide">
+        <img height="900" src="https://mybestruns.com/photo/106.jpg" class="d-block w-100" alt="Second slide">
 
         <div class="carousel-caption d-none d-md-block">
-          <h5>Second slide label</h5>
-          <p>Some representative placeholder content for the second slide.</p>
+          <h1>Get up and run!</h1>
+          <h5>The body achieves what the mind believes.</h5>
         </div>
       </div>
       <div class="carousel-item">
-        <img width="auto" height="800" src="https://pixabay.com/get/gdae5a99a8b20031c02ac3079315acac82c748b3690173b52667e328bfd143c1f7b4cf793af042de0bba456ebd746503af4d7057f9da90323f224a49d1e21c3e6_1280.jpg" class="d-block w-100" alt="Second slide">
+        <img height="900" src="https://img.shetu66.com/2023/07/18/1689668645651692.png" class="d-block w-100" alt="Second slide">
 
         <div class="carousel-caption d-none d-md-block">
-          <h5>Third slide label</h5>
-          <p>Some representative placeholder content for the third slide.</p>
+          <h1>Live Life</h1>
+          <h5>Life is short. RUNNING make it seem longer.</h5>
         </div>
       </div>
     </div>
@@ -70,13 +71,7 @@ include 'navbar.php';
       <span class="visually-hidden">Next</span>
     </button>
   </div>
-
-  <?php
-
-  include 'footer.php';
-
-
-  ?>
+  <?php include 'footer.php'; ?>
 
 </body>
 
