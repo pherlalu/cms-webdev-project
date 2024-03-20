@@ -10,9 +10,7 @@
  ****************/
 
 session_start();
-
 include 'db_connect.php';
-
 ?>
 
 <!DOCTYPE html>
@@ -54,6 +52,9 @@ include 'db_connect.php';
         </label>
       </div>
       <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+
+      <p class="mt-5 mb-3 text-muted text-center"><a class="nav-link active" href="register.php">Sign Up</a></p>
+
       <p class="mt-5 mb-3 text-muted text-center">&copy; 2017-2022</p>
     </form>
   </div>
@@ -67,18 +68,23 @@ include 'db_connect.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   $username = $_POST['username'];
-  $password = sha1($_POST['password']);
+  $password = $_POST['password'];
 
-  $stmt = $conn->prepare("SELECT * FROM users WHERE username = ? AND password = ? LIMIT 1 ");
-  $stmt->execute(array($username, $password));
-  $checkuser = $stmt->rowCount();
+  $stmt = $conn->prepare("SELECT * FROM users WHERE username = ? LIMIT 1");
+  $stmt->execute(array($username));
   $user = $stmt->fetch();
 
-  if ($checkuser > 0) {
+  if ($user && password_verify($password, $user['password'])) {
     $_SESSION['user'] = $user['username'];
     $_SESSION['is_admin'] = $user['is_admin'];
-    header('location: home.php');
+    if ($_SESSION['is_admin'] == 0) {
+      header('location: index.php');
+    }
+    if ($_SESSION['is_admin'] == 1) {
+      header('location: events.php');
+    }
   }
 }
+
 
 ?>

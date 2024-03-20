@@ -1,4 +1,3 @@
- 
  <?php
 
     /*******w******** 
@@ -10,14 +9,17 @@
 
      ****************/
 
-    define('DB_DSN', 'mysql:host=localhost;dbname=runoutloudserver;charset=utf8');
-    define('DB_USER', 'root');
-    define('DB_PASS', '');
+    $db_config = array(
+        'dsn' => 'mysql:host=localhost;dbname=runoutloudserver;charset=utf8',
+        'user' => 'root',
+        'pass' => ''
+    );
+
     $option = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',);
 
     try {
         // Try creating new PDO connection to MySQL.
-        $conn = new PDO(DB_DSN, DB_USER, DB_PASS, $option);
+        $conn = new PDO($db_config['dsn'], $db_config['user'], $db_config['pass'], $option);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         //,array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
     } catch (PDOException $e) {
