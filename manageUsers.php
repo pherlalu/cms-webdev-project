@@ -44,11 +44,12 @@ if (isset($_POST['show_edit_user'])) {
 if (isset($_POST['edit_user'])) {
   $id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
   $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+  $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
   $is_admin = isset($_POST['is_admin']) ? 1 : 0;
 
   // Update the user's details in the database
-  $stmt = $conn->prepare("UPDATE users SET username = ?, is_admin = ? WHERE id = ?");
-  $stmt->execute(array($username, $is_admin, $id));
+  $stmt = $conn->prepare("UPDATE users SET username = ?, email = ?, is_admin = ? WHERE id = ?");
+  $stmt->execute(array($username, $email, $is_admin, $id));
 }
 
 // Handle the delete user form submission
@@ -133,6 +134,10 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="form-group">
               <label for="username">Username</label>
               <input type="text" name="username" id="username" class="form-control" value="<?= isset($_SESSION['user_to_edit']['username']) ? htmlspecialchars($_SESSION['user_to_edit']['username']) : ''; ?>" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="text" name="email" id="email" class="form-control" value="<?= isset($_SESSION['user_to_edit']['email']) ? htmlspecialchars($_SESSION['user_to_edit']['email']) : ''; ?>" required>
             </div>
             <div class="form-group form-check">
               <input type="checkbox" name="is_admin" id="is_admin" class="form-check-input" <?= isset($_SESSION['user_to_edit']['is_admin']) && $_SESSION['user_to_edit']['is_admin'] ? 'checked' : ''; ?>>
