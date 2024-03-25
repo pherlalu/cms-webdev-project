@@ -90,7 +90,8 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <tr>
           <th scope="col">#</th>
           <th scope="col">Username</th>
-          <th scope="col">Is Admin</th>
+          <th scope="col">Email Address</th>
+          <th scope="col">Is Admin Account?</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
@@ -100,6 +101,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <tr>
             <th scope="row"><?= $i++; ?></th>
             <td><?= htmlspecialchars($user['username']); ?></td>
+            <td><?= htmlspecialchars($user['email']); ?></td>
             <td><?= $user['is_admin'] ? 'Yes' : 'No'; ?></td>
             <td>
               <form action="<?= $_SERVER['PHP_SELF']; ?>" method="post">
