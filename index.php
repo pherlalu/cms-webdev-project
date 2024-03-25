@@ -22,27 +22,8 @@ include 'navbar.php';
   <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
   <title>Bootstrap Example</title>
 </head>
-<!--Main Navigation-->
 <header>
   <style>
-    /* Carousel styling */
-    .carousel-inner {
-      height: 95vh;
-    }
-
-    /* Text styling */
-    .carousel-text1 {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-    }
-
-    /* Adjusted button styling for visibility */
-    .carousel-btn1 {
-      margin-top: 20px;
-    }
   </style>
 
   <div class="carousel-inner">
