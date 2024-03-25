@@ -15,7 +15,7 @@ include 'db_connect.php';
 
 ?>
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en">
 
 <head>
   <meta charset="utf-8" />
@@ -27,7 +27,7 @@ include 'db_connect.php';
   <title>RunOutLoud</title>
 </head>
 
-<body class="p-2 m-0 border-0 bd-example m-0 border-0">
+<body class="p-0 m-0 border-0 bd-example m-0 border-0">
 
   <nav class="navbar bg-dark bg-body-tertiary navbar-toast" data-bs-theme="dark">
     <div class="container-fluid">

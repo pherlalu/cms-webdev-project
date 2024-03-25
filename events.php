@@ -57,33 +57,29 @@ $count = $statement->rowCount();
   <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="https://cdn.pixabay.com/photo/2021/09/27/10/02/running-6660185_1280.jpg" class="d-block w-100" alt="New Image 1">
-        <!-- <div class="carousel-caption d-none d-md-block">
-          <h5>New Image 1</h5>
-          <p>Description for the first new image.</p>
-        </div> -->
+        <img src="https://cdn.pixabay.com/photo/2023/10/04/14/15/man-8293794_1280.jpg" class="d-block w-100" alt="New Image 1">
       </div>
       <div class="carousel-item">
         <img src="https://quotefancy.com/media/wallpaper/1600x900/1734202-Amby-Burfoot-Quote-Life-is-a-marathon-not-a-sprint-pace-yourself.jpg" class="d-block w-100" alt="New Image 2">
-
       </div>
       <div class="carousel-item">
         <img src="https://cdn.pixabay.com/photo/2016/07/14/17/14/runners-1517155_1280.jpg" class="d-block w-100" alt="New Image 3">
       </div>
     </div>
   </div>
+  <div class="container mt-4 shadow-lg mb-3">
+    <div class="row justify-content-center">
+      <form class="row g-3 mb-4" method="POST">
 
-  <div class="col-md-6 p-lg-5 mx-auto my-5">
-    <div class="card text-bg-dark mb-3">
-      <div class="card-header">
-        Search for events
-      </div>
-      <div class="card-body">
-        <form class="d-flex" method="POST">
-          <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search" value="<?= htmlspecialchars($search) ?>">
-          <div class="form-group">
-            <select class="form-control" id="distance_id" name="distance_id">
-              <option value="">-Distance-</option>
+        <div class="col-md-6">
+          <div id="basic" class="form-outline">
+            <input class="form-control form-control-lg search-input" type="search" name="search" placeholder="Search" aria-label="Search" value="<?= htmlspecialchars($search) ?>">
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group custom-dropdown">
+            <select class="form-control form-control-lg custom-select" id="distance_id" name="distance_id">
+              <option value="">-- All Distance --</option>
               <?php foreach ($distances as $distance) : ?>
                 <option value="<?= htmlspecialchars($distance['distance_id']) ?>" <?= (isset($_POST['distance_id']) && $_POST['distance_id'] == $distance['distance_id']) ? 'selected' : '' ?>>
                   <?= htmlspecialchars($distance['distance_type']) ?>
@@ -91,61 +87,83 @@ $count = $statement->rowCount();
               <?php endforeach; ?>
             </select>
           </div>
-          <button class="btn btn-outline-success ms-2" type="submit">Search</button>
-        </form>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group custom-dropdown">
+            <select class="form-control form-control-lg custom-select" id="sort_by" name="sort_by">
+              <option value="">-- Sort By --</option>
+              <option value="asc" <?= (isset($_POST['sort_by']) && $_POST['sort_by'] == 'asc') ? 'selected' : '' ?>>Ascending</option>
+              <option value="desc" <?= (isset($_POST['sort_by']) && $_POST['sort_by'] == 'desc') ? 'selected' : '' ?>>Descending</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-2 d-grid  align-items-center">
+          <input class="btn btn-dark btn-lg" type="submit" value="Search" />
+        </div>
 
-      </div>
-      <div class="card-header text-body-secondary">
-        RunOutLoud
+
+      </form>
+    </div>
+  </div>
+
+  <!-- Search Result -->
+  <div class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        <table class="table">
+          <tbody>
+            <?php if ($count > 0) : ?>
+              <tr>
+                <td class="text-center">
+                  <p class="mt-3">
+                    <strong><?= $count ?></strong> Results Found
+                  </p>
+                </td>
+              </tr>
+
+              <?php while ($row = $statement->fetch()) : ?>
+                <tr>
+                  <td>
+                    <div class="card mb-3">
+                      <div class="row g-0">
+                        <div class="col-md-4">
+                          <img src="<?= $row['event_image_url'] ?>" class="img-fluid rounded-start" alt="Event Image">
+                        </div>
+                        <div class="col-md-8">
+                          <div class="card-body">
+                            <h2 class="card-title"><?= $row['event_name'] ?></h2>
+                            <p class="card-text">
+                            <h5 class="text-body-secondary">
+                              <?= date("F d, Y", strtotime($row['event_date'])) ?>
+                            </h5>
+                            <h5 class="text-body-secondary"><?= $row['event_location'] ?></h5>
+                            </p>
+                            <p class="card-text"><?= $row['event_description'] ?></p>
+                            <button class="btn btn-primary">Race Details</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              <?php endwhile ?>
+            <?php else : ?>
+              <tr>
+                <td>
+                  <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+                    <h2 class="text-muted">No results found!</h2>
+                  </div>
+                </td>
+              </tr>
+            <?php endif ?>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
-  <table class="table d-flex justify-content-center">
-    <tbody>
-      <?php if ($count > 0) : ?>
-        <tr>
-          <td class="text-center">
-            <p class="mt-3">
-              <strong><?= $count ?></strong> Results Found
-            </p>
-          </td>
-        </tr>
 
-        <?php while ($row = $statement->fetch()) : ?>
-          <tr>
-            <td>
-              <div class="card mb-3" style="max-width: 900px;">
-                <div class="row g-0">
-                  <div class="col-md-4">
-                    <img src="<?= $row['event_image_url'] ?>" class="img-fluid rounded-start" alt="...">
-                  </div>
-                  <div class="col-md-8">
-                    <div class="card-body">
-                      <h2 class="card-title"><?= $row['event_name'] ?></h2>
-                      <p class="card-text">
-                      <h5 class="text-body-secondary">
-                        <?= date("F d, Y", strtotime($row['event_date'])) ?>
-                      </h5>
-                      <h5 class="text-body-secondary"><?= $row['event_location'] ?></h5>
-                      </p>
-                      <p class="card-text"><?= $row['event_description'] ?></p>
-                      <button>Race Details</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </td>
-          </tr>
-        <?php endwhile ?>
-      <?php else : ?>
-        <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
-          <h2 class="text-muted">No results found!</h2>
-        </div>
-      <?php endif ?>
-
-    </tbody>
-  </table>
   <?php include 'footer.php'; ?>
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
@@ -156,5 +174,6 @@ $count = $statement->rowCount();
     });
   </script>
 </body>
+
 
 </html>

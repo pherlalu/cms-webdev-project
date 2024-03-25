@@ -30,19 +30,19 @@ include 'navbar.php';
     <video style="min-width: 100%; min-height: 100%" playsinline autoplay muted loop>
       <source class="h-100" src="./assets/video/cebumarathon2024.mp4" type="video/mp4" />
     </video>
-    <div class="mask" style="background-color: rgba(0, 0, 0, 0.6)">
-      <div class="d-flex justify-content-center align-items-center h-100">
-        <div class="carousel-text1">
-          <h1 class="mb-3">RUN WHILE YOU CAN</h1>
-          <h5 class="mb-4">
-            “RunOutLoud” gives you the latest running events such as marathons and fun runs.
-          </h5>
+    <div class="mask" ">
+      <div class=" d-flex justify-content-center align-items-center h-100">
+      <div class="carousel-text1">
+        <h1 class="text-white mb-3">RUN WHILE YOU CAN</h1>
+        <h5 class="text-white mb-4">
+          “RunOutLoud” gives you the latest running events such as marathons and fun runs.
+        </h5>
 
-          <a class="btn btn-outline-light btn-lg m-2" href="events.php" role="button">Find your event</a>
+        <a class="btn btn-outline-light btn-lg m-2" href="events.php" role="button">Find your event</a>
 
-        </div>
       </div>
     </div>
+  </div>
   </div>
 </header>
 
