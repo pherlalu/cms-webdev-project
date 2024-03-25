@@ -88,27 +88,19 @@ include 'db_connect.php';
               <a class="nav-link active" aria-current="page" href="index.php">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="events.php">Events</a>
+              <a class="nav-link active" href="events.php">Events</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="about.php">About</a>
+              <a class="nav-link active" href="about.php">About</a>
             </li>
             <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1) : ?>
               <li class="nav-item">
                 <a class="nav-link active" href="manageUsers.php">Manage Users</a>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Dropdown
+                <a class="nav-link active" href="manageEvents.php">
+                  Manage Events Pages
                 </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li>
-                    <hr class="dropdown-divider">
-                  </li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
               </li>
             <?php endif; ?>
           </ul>
@@ -149,6 +141,8 @@ include 'db_connect.php';
       toastList.forEach(toast => toast.show()); // This show them
     });
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

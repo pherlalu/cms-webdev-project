@@ -36,9 +36,9 @@ include 'navbar.php';
     </div>
   </div>
   <div class="container my-5">
-    <div class="p-5 text-center bg-body-tertiary rounded-3">
+    <div class="p-5 bg-body-tertiary rounded-3">
 
-      <h1 class="text-body-emphasis">Objectives</h1>
+      <h1 class="text-body-emphasis text-center ">Objectives</h1>
       <div class="col-lg-8 mx-auto fs-5 text-muted">
         <ul class="text-left">
           <li>Enable users to stay informed about running events in their area through the website.</li>
