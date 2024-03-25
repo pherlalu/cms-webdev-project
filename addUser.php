@@ -4,8 +4,8 @@
     
     Name: Steffi Ann Tanya Amper
     Created: March 19, 2024
-    Updated: 
-    Description: Events page
+    Updated: March 24, 2024
+    Description: Add User page
 
  ****************/
 
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
   <div class="container">
     <h1 class="mt-5 text-center">Add New User</h1>
-    <form class="mt-3" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+    <form class="mt-3" action="<?= $_SERVER['PHP_SELF']; ?>" method="post">
       <div class="form-group">
         <label for="username">Username</label>
         <input type="text" name="username" id="username" class="form-control" required>

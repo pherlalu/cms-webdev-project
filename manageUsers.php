@@ -5,7 +5,7 @@
     Name: Steffi Ann Tanya Amper
     Created: March 19, 2024
     Updated: 
-    Description: Events page
+    Description: Manage Users page
 
  ****************/
 
@@ -21,7 +21,7 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] != 1) {
 
 // Handle the add user form submission
 if (isset($_POST['add_user'])) {
-  $username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
+  $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
   $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
   $is_admin = isset($_POST['is_admin']) ? 1 : 0;
 
@@ -101,9 +101,8 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <th scope="row"><?= $i++; ?></th>
             <td><?= htmlspecialchars($user['username']); ?></td>
             <td><?= $user['is_admin'] ? 'Yes' : 'No'; ?></td>
-            <!-- Change the edit button in the table to a show edit form button -->
             <td>
-              <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+              <form action="<?= $_SERVER['PHP_SELF']; ?>" method="post">
                 <input type="hidden" name="id" value="<?= $user['id']; ?>">
                 <button type="button" class="btn btn-outline-primary edit-button" data-bs-toggle="modal" data-bs-target="#myModal" data-id="<?= $user['id']; ?>" data-username="<?= htmlspecialchars($user['username']); ?>" data-is-admin="<?= $user['is_admin'] ? 'Yes' : 'No'; ?>">Edit</button>
 
@@ -127,7 +126,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+          <form action="<?= $_SERVER['PHP_SELF']; ?>" method="post">
             <input type="hidden" name="id" value="<?= isset($_SESSION['user_to_edit']['id']) ? $_SESSION['user_to_edit']['id'] : ''; ?>">
             <div class="form-group">
               <label for="username">Username</label>

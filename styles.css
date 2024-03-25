@@ -63,6 +63,41 @@ body {
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
 }
 
+.navbar-toast {
+  position: relative;
+  z-index: 1051;
+}
+
+.toast-container {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1050;
+  pointer-events: none;
+}
+
+#carouselExampleAutoplaying .carousel-item img {
+  height: 50vh;
+  width: 100%;
+  object-fit: cover;
+}
+
+.carousel-inner {
+  height: 95vh;
+}
+
+.carousel-text1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.carousel-btn1 {
+  margin-top: 20px;
+}
 @keyframes fadeInRight {
   from {
     opacity: 0;

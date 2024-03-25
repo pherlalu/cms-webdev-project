@@ -5,7 +5,7 @@
     Name: Steffi Ann Tanya Amper
     Created: March 17, 2024
     Updated: March 21, 2024
-    Description: Login page
+    Description: Register page
 
  ****************/
 
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="row">
       <div class="col-lg-6 order-lg-2">
         <div class="form-container">
-          <form class="form-signin p-4 rounded" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+          <form class="form-signin p-4 rounded" action="<?= $_SERVER['PHP_SELF']; ?>" method="post">
             <h1 class="h3 mb-3 font-weight-normal text-center">Please register</h1>
 
             <label for="username" class="sr-only">Username</label>

@@ -1,6 +1,18 @@
 <?php
+
+
+/*******w******** 
+    
+    Name: Steffi Ann Tanya Amper
+    Created: March 19, 2024
+    Updated: 
+    Description: Navigation Bar page
+
+ ****************/
+
 session_start();
 include 'db_connect.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
@@ -10,12 +22,14 @@ include 'db_connect.php';
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet" />
-  <title>Bootstrap Example</title>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <title>RunOutLoud</title>
 </head>
 
 <body class="p-2 m-0 border-0 bd-example m-0 border-0">
-  <nav class="navbar bg-dark bg-body-tertiary" data-bs-theme="dark">
+
+  <nav class="navbar bg-dark bg-body-tertiary navbar-toast" data-bs-theme="dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="index.php">
         <img src="./assets/logo/logo-svg.svg" alt="Bootstrap" width="50" height="auto" class="d-inline-block align-text-top" />
@@ -23,15 +37,14 @@ include 'db_connect.php';
       </a>
       <ul class="nav">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="index.php">Home</a>
+          <a class="navbar-brand" aria-current="page" href="index.php">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="events.php">Events</a>
+          <a class="navbar-brand" href="events.php">Events</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="about.php">About</a>
+          <a class="navbar-brand" href="about.php">About</a>
         </li>
-
       </ul>
       <div style="display: flex; align-items: center;">
         <?php if (isset($_SESSION['user'])) : ?>
@@ -67,8 +80,6 @@ include 'db_connect.php';
               User: Normal User
             </h5>
           <?php endif; ?>
-
-
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
@@ -86,6 +97,19 @@ include 'db_connect.php';
               <li class="nav-item">
                 <a class="nav-link active" href="manageUsers.php">Manage Users</a>
               </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Dropdown
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li>
+                    <hr class="dropdown-divider">
+                  </li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </li>
             <?php endif; ?>
           </ul>
           <form class="d-flex mt-3" role="search" method="post" action="search_results.php">
@@ -96,7 +120,35 @@ include 'db_connect.php';
       </div>
     </div>
   </nav>
+  <!-- Toast Container -->
+  <div class="toast-container">
+    <?php if (isset($_SESSION['login_success'])) : ?>
+      <div class="toast align-items-center bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+            <?= $_SESSION['login_success'] ?>
+          </div>
+          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+      <?php unset($_SESSION['login_success']); // Unset the session variable after displaying the message 
+      ?>
+    <?php endif; ?>
+  </div>
 
+
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+      var toastList = toastElList.map(function(toastEl) {
+        return new bootstrap.Toast(toastEl, {
+          autohide: true,
+          delay: 3000
+        }) // Autohide after 3 seconds
+      });
+      toastList.forEach(toast => toast.show()); // This show them
+    });
+  </script>
 </body>
 
 </html>

@@ -25,11 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if ($user && password_verify($password, $user['password'])) {
     $_SESSION['user'] = $user['username'];
     $_SESSION['is_admin'] = $user['is_admin'];
+    $_SESSION['login_success'] = 'Successfully logged in!';
     if ($_SESSION['is_admin'] == 0) {
       header('location: index.php');
     }
     if ($_SESSION['is_admin'] == 1) {
-      header('location: events.php');
+      header('location: index.php');
     }
   } else {
     $message = 'Invalid username or password';
@@ -45,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
   <link rel="stylesheet" href="styles.css">
-
   <title>Sign In</title>
 </head>
 
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="row">
       <div class="col-lg-6">
         <div class="form-container ">
-          <form class="form-signin p-4 rounded" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+          <form class="form-signin p-4 rounded" action="<?= $_SERVER['PHP_SELF']; ?>" method="post">
             <h1 class="h3 mb-3 font-weight-normal text-center">Welcome to RunOutLoud!</h1>
 
             <label for="username" class="sr-only">Username</label>

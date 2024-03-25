@@ -5,7 +5,7 @@
     Name: Steffi Ann Tanya Amper
     Created: March 19, 2024
     Updated: 
-    Description: Events page
+    Description: Search Results page
 
  ****************/
 
@@ -24,20 +24,10 @@ if (isset($_POST['search']) && !empty(trim($_POST['search']))) {
 
 $statement = $conn->prepare($query);
 $statement->execute($params);
-
-// Get the number of results
 $count = $statement->rowCount();
-
-// Fetch all the results
 $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-// Now you can loop through $results to display them
-foreach ($results as $result) {
-  // Display each result
-  // echo $result['event_name'];
-}
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -52,8 +42,6 @@ foreach ($results as $result) {
 </head>
 
 <body>
-
-
   <table class="table d-flex justify-content-center">
     <tbody>
       <?php if ($count > 0) : ?>
@@ -64,7 +52,6 @@ foreach ($results as $result) {
             </p>
           </td>
         </tr>
-
         <?php foreach ($results as $row) : ?>
           <tr>
             <td>
@@ -96,10 +83,6 @@ foreach ($results as $result) {
           <h2 class="text-muted">No results found!</h2>
         </div>
       <?php endif ?>
-
-
-
-      <!-- Repeat the <tr> block for each item -->
     </tbody>
   </table>
   <?php include 'footer.php'; ?>
