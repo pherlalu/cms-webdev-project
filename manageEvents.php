@@ -4,7 +4,7 @@
     
     Name: Steffi Ann Tanya Amper
     Created: March 19, 2024
-    Updated: 
+    Updated: March 25, 2024
     Description: Manage Users page
 
  ****************/
@@ -19,51 +19,32 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] != 1) {
   exit();
 }
 
-// Handle the add user form submission
-if (isset($_POST['add_user'])) {
-  $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-  $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-  $is_admin = isset($_POST['is_admin']) ? 1 : 0;
-
-  // Insert the new user into the database
-  $stmt = $conn->prepare("INSERT INTO users (username, password, is_admin) VALUES (?, ?, ?)");
-  $stmt->execute(array($username, $password, $is_admin));
-}
-
-// Handle the show edit form submission
-if (isset($_POST['show_edit_user'])) {
+// Handle the edit event form submission
+if (isset($_POST['edit_event'])) {
   $id = filter_var($_POST['event_id'], FILTER_SANITIZE_NUMBER_INT);
+  $eventname = filter_input(INPUT_POST, 'eventname', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+  $is_active = isset($_POST['is_active']) ? 1 : 0;
 
-  // Get the user's current details from the database
-  $stmt = $conn->prepare('SELECT * FROM runevents WHERE id = ?');
-  $stmt->execute(array($id));
-  $user_to_edit = $stmt->fetch(PDO::FETCH_ASSOC);
+  // Update the event's details in the database
+  $stmt = $conn->prepare("UPDATE runevents SET eventname = ?, is_active = ? WHERE id = ?");
+  $stmt->execute(array($eventname, $is_active, $id));
 }
 
-// Handle the edit user form submission
-if (isset($_POST['edit_user'])) {
-  $id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
-  $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-  $is_admin = isset($_POST['is_admin']) ? 1 : 0;
-
-  // Update the user's details in the database
-  $stmt = $conn->prepare("UPDATE users SET username = ?, is_admin = ? WHERE id = ?");
-  $stmt->execute(array($username, $is_admin, $id));
-}
-
-// Handle the delete user form submission
-if (isset($_POST['delete_user'])) {
+// Handle the delete event form submission
+if (isset($_POST['delete_event'])) {
   $id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
 
-  // Delete the user from the database
-  $stmt = $conn->prepare("DELETE FROM users WHERE id = ?");
+  // Delete the event from the database
+  $stmt = $conn->prepare("DELETE FROM runevents WHERE event_id = ?");
   $stmt->execute(array($id));
 }
 
-// Get all users from the database
+
+// Get all runevents from the database
 $stmt = $conn->prepare('SELECT * FROM runevents');
 $stmt->execute();
 $runevents = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 
@@ -120,10 +101,11 @@ $runevents = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <td class="align-middle">
               <div class="btn-group" role="group" aria-label="Event Actions">
                 <form action="<?= $_SERVER['PHP_SELF']; ?>" method="post">
-                  <input type="hidden" name="id" value="<?= $user['id']; ?>">
-                  <button type="button" class="btn btn-outline-primary edit-button" data-bs-toggle="modal" data-bs-target="#myModal" data-id="<?= $user['id']; ?>" data-username="<?= htmlspecialchars($user['username']); ?>" data-is-admin="<?= $user['is_admin'] ? 'Yes' : 'No'; ?>">Edit</button>
-                  <input type="submit" name="delete_user" value="Delete" class="btn btn-outline-danger">
+                  <input type="hidden" name="id" value="<?= $runevent['event_id']; ?>"> <!-- Use event_id -->
+                  <button type="button" class="btn btn-outline-primary edit-button" data-bs-toggle="modal" data-bs-target="#addEventModal" data-id="<?= $user['id']; ?>" data-username="<?= htmlspecialchars($user['username']); ?>" data-is-admin="<?= $user['is_admin'] ? 'Yes' : 'No'; ?>">Edit</button>
+                  <input type="submit" name="delete_event" value="Delete" class="btn btn-outline-danger">
                 </form>
+
               </div>
             </td>
           </tr>
@@ -135,33 +117,61 @@ $runevents = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <a href="addEvent.php" class="btn btn-success mt-3">Add New Event</a>
     </div>
   </div>
-  <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <!-- Add Event Modal -->
+  <div class="modal fade" id="addEventModal" tabindex="-1" aria-labelledby="addEventModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+          <h5 class="modal-title" id="addEventModalLabel">Add New Event</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form action="<?= $_SERVER['PHP_SELF']; ?>" method="post">
-            <input type="hidden" name="id" value="<?= isset($_SESSION['user_to_edit']['id']) ? $_SESSION['user_to_edit']['id'] : ''; ?>">
-            <div class="form-group">
-              <label for="username">Username</label>
-              <input type="text" name="username" id="username" class="form-control" value="<?= isset($_SESSION['user_to_edit']['username']) ? htmlspecialchars($_SESSION['user_to_edit']['username']) : ''; ?>" required>
+          <form action="addEvent.php" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+              <label for="event_name" class="form-label">Event Name</label>
+              <input type="text" class="form-control" id="event_name" name="event_name" required>
             </div>
-            <div class="form-group form-check">
-              <input type="checkbox" name="is_admin" id="is_admin" class="form-check-input" <?= isset($_SESSION['user_to_edit']['is_admin']) && $_SESSION['user_to_edit']['is_admin'] ? 'checked' : ''; ?>>
-              <label for="is_admin" class="form-check-label">Admin</label>
+            <div class="mb-3">
+              <label for="event_date" class="form-label">Event Date</label>
+              <input type="date" class="form-control" id="event_date" name="event_date" required>
+            </div>
+            <div class="mb-3">
+              <label for="event_location" class="form-label">Event Location</label>
+              <input type="text" class="form-control" id="event_location" name="event_location" required>
+            </div>
+            <div class="mb-3">
+              <label for="event_description" class="form-label">Event Description</label>
+              <textarea class="form-control" id="event_description" name="event_description" rows="5" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="event_distance" class="form-label">Event Distance (in miles)</label>
+              <select class="form-control form-control-lg custom-select" id="event_distance" name="event_distance" required>
+                <option value="5K">5K</option>
+                <option value="10K">10K</option>
+                <option value="Half Marathon">Half Marathon</option>
+                <option value="Marathon">Marathon</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="event_image_url" class="form-label">Event Image URL</label>
+              <input type="text" class="form-control" id="event_image_url" name="event_image_url" required>
+            </div>
+            <div class="mb-3">
+              <label for="event_image" class="form-label">Upload Event Image</label>
+              <input type="file" class="form-control" id="event_image" name="event_image">
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <input type="submit" name="edit_user" value="Save changes" class="btn btn-primary">
+              <button type="submit" class="btn btn-primary">Submit</button>
             </div>
           </form>
         </div>
       </div>
     </div>
   </div>
+
+
   <?php include 'footer.php'; ?>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

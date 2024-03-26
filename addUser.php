@@ -4,7 +4,7 @@
     
     Name: Steffi Ann Tanya Amper
     Created: March 19, 2024
-    Updated: March 24, 2024
+    Updated: March 25, 2024
     Description: Add User page
 
  ****************/
@@ -48,13 +48,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="en">
 
 <head>
-  <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/css/bootstrap.min.css" rel="stylesheet">
-
   <title>Add New User</title>
 </head>
 
