@@ -29,13 +29,12 @@ include 'db_connect.php';
 
 <body class="p-0 m-0 border-0 bd-example m-0 border-0">
 
-  <nav class="navbar bg-dark bg-body-tertiary navbar-toast" data-bs-theme="dark">
+  <nav class="navbar navbar-dark bg-dark navbar-toast">
     <div class="container-fluid">
       <a class="navbar-brand" href="index.php">
         <img src="./assets/logo/logo-svg.svg" alt="Bootstrap" width="50" height="auto" class="d-inline-block align-text-top" />
-        RunOutLoud
       </a>
-      <ul class="nav">
+      <ul class="nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="navbar-brand" aria-current="page" href="index.php">Home</a>
         </li>
@@ -127,8 +126,6 @@ include 'db_connect.php';
       ?>
     <?php endif; ?>
   </div>
-
-
   <script>
     document.addEventListener('DOMContentLoaded', (event) => {
       var toastElList = [].slice.call(document.querySelectorAll('.toast'))
@@ -142,7 +139,6 @@ include 'db_connect.php';
     });
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>
