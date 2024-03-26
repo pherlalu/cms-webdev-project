@@ -29,25 +29,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $event_distance = filter_input(INPUT_POST, 'event_distance', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
   $event_image_url = filter_input(INPUT_POST, 'event_image_url', FILTER_SANITIZE_URL);
 
-  // Build the parameterized SQL query and bind to the above sanitized values.
-  $query = "INSERT INTO runevents (event_name, event_date, event_location, event_description, event_distance, event_image_url) VALUES (:event_name, :event_date, :event_location, :event_description, :event_distance, :event_image_url)";
-  $statement = $conn->prepare($query);
+  // Query to get distance_id from distances table based on distance_type
+  $distance_query = "SELECT distance_id FROM distances WHERE distance_type = :event_distance";
+  $distance_stmt = $conn->prepare($distance_query);
+  $distance_stmt->bindParam(':event_distance', $event_distance);
+  $distance_stmt->execute();
+  $distance_result = $distance_stmt->fetch();
 
-  // Bind values to the parameters
-  $statement->bindValue(':event_name', $event_name);
-  $statement->bindValue(':event_date', $event_date);
-  $statement->bindValue(':event_location', $event_location);
-  $statement->bindValue(':event_description', $event_description);
-  $statement->bindValue(':event_distance', $event_distance);
-  $statement->bindValue(':event_image_url', $event_image_url);
+  if ($distance_result) {
+    $distance_id = $distance_result['distance_id'];
 
-  // Execute the INSERT.
-  // execute() will check for possible SQL injection and remove if necessary
-  $statement->execute();
+    // Build the parameterized SQL query and bind to the above sanitized values.
+    $query = "INSERT INTO runevents (event_name, event_date, event_location, event_description, event_distance, event_image_url, distance_id) VALUES (:event_name, :event_date, :event_location, :event_description, :event_distance, :event_image_url, :distance_id)";
+    $statement = $conn->prepare($query);
 
-  // Redirect the user to the manage users page
-  header('Location: manageEvents.php');
-  exit();
+    // Bind values to the parameters
+    $statement->bindValue(':event_name', $event_name);
+    $statement->bindValue(':event_date', $event_date);
+    $statement->bindValue(':event_location', $event_location);
+    $statement->bindValue(':event_description', $event_description);
+    $statement->bindValue(':event_distance', $event_distance);
+    $statement->bindValue(':event_image_url', $event_image_url);
+    $statement->bindValue(':distance_id', $distance_id, PDO::PARAM_INT); // Bind distance_id
+
+    // Execute the INSERT.
+    $statement->execute();
+
+    // Redirect the user to the manage events page
+    header('Location: manageEvents.php');
+    exit();
+  }
 }
 
 ob_end_flush();
@@ -107,7 +118,6 @@ ob_end_flush();
                   <option value="10K">10K</option>
                   <option value="Half Marathon">Half Marathon</option>
                   <option value="Marathon">Marathon</option>
-                  <option value="Other">Other</option>
                 </select>
               </div>
               <div class="mb-3">

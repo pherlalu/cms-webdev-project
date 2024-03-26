@@ -136,6 +136,7 @@ $count = $statement->rowCount();
                             <h5 class="text-body-secondary">
                               <?= date("F d, Y", strtotime($row['event_date'])) ?>
                             </h5>
+                            <h5 class="text-body-secondary">Event Distance: <?= $row['event_distance'] ?></h5>
                             <h5 class="text-body-secondary"><?= $row['event_location'] ?></h5>
                             </p>
                             <p class="card-text"><?= $row['event_description'] ?></p>

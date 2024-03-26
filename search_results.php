@@ -70,7 +70,7 @@ $results = $statement->fetchAll(PDO::FETCH_ASSOC);
                       <h5 class="text-body-secondary"><?= $row['event_location'] ?></h5>
                       </p>
                       <p class="card-text"><?= $row['event_description'] ?></p>
-                      <button>Race Details</button>
+                      <button class="btn btn-primary">Race Details</button>
                     </div>
                   </div>
                 </div>
