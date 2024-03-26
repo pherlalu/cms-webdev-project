@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           <div class="text-center mt-3">
             <a href="#!" class="forgot-password-link">Forgot password?</a>
             <p class="login-wrapper-footer-text">Already have an account? <a href="login.php" class="text-reset">Login here</a></p>
-            <p class="mt-3 mb-0 text-muted">© 2017-2022</p>
+            <p class="mt-3 mb-0 text-muted">© 2024</p>
           </div>
         </div>
       </div>
