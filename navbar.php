@@ -103,7 +103,7 @@ include 'db_connect.php';
               </li>
             <?php endif; ?>
           </ul>
-          <form class="d-flex mt-3" role="search" method="post" action="search_results.php">
+          <form class="d-flex mt-3" role="search" method="post" action="events.php">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" />
             <button class="btn btn-success" type="submit">Search</button>
           </form>

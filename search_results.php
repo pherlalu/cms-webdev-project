@@ -9,23 +9,58 @@
 
  ****************/
 
-include 'navbar.php';
 include 'db_connect.php';
 
 $search = '';
 $query = "SELECT * FROM runevents";
 $params = [];
+$sort_field = 'event_name';
+$sort_direction = 'asc';
+$distance_id = '';
+
+if (isset($_POST['distance_id']) && $_POST['distance_id'] !== '') {
+  $selected_distance_id = $_POST['distance_id'];
+  $query .= " WHERE distance_id = :distance_id";
+  $params['distance_id'] = $selected_distance_id;
+}
 
 if (isset($_POST['search']) && !empty(trim($_POST['search']))) {
   $search = $_POST['search'];
-  $query .= " WHERE event_name LIKE :search OR event_location LIKE :search";
+  if (strpos($query, 'WHERE') !== false) {
+    $query .= " AND (event_name LIKE :search OR event_location LIKE :search)";
+  } else {
+    $query .= " WHERE event_name LIKE :search OR event_location LIKE :search";
+  }
   $params['search'] = "%$search%";
 }
 
-$statement = $conn->prepare($query);
-$statement->execute($params);
-$count = $statement->rowCount();
-$results = $statement->fetchAll(PDO::FETCH_ASSOC);
+// Sorting functionality
+if (isset($_POST['sort_field']) && in_array($_POST['sort_field'], ['event_name', 'event_location', 'event_date'])) {
+  $sort_field = $_POST['sort_field'];
+}
+
+if (isset($_POST['sort_direction']) && in_array($_POST['sort_direction'], ['asc', 'desc'])) {
+  $sort_direction = $_POST['sort_direction'];
+}
+
+if (isset($_POST['distance_id']) && $_POST['distance_id'] !== '') {
+  $distance_id = $_POST['distance_id'];
+}
+
+$query = "SELECT * FROM runevents ";
+
+$params = [];
+if (!empty($distance_id)) {
+  $query .= "WHERE distance_id = :distance_id ";
+  $params[':distance_id'] = $distance_id;
+}
+
+$query .= "ORDER BY $sort_field $sort_direction";
+$stmt = $conn->prepare($query);
+$stmt->execute($params);
+
+$count = $stmt->rowCount();
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -67,6 +102,7 @@ $results = $statement->fetchAll(PDO::FETCH_ASSOC);
                       <h5 class="text-body-secondary">
                         <?= date("F d, Y", strtotime($row['event_date'])) ?>
                       </h5>
+                      <h5 class="text-body-secondary">Event Distance: <?= $row['event_distance'] ?></h5>
                       <h5 class="text-body-secondary"><?= $row['event_location'] ?></h5>
                       </p>
                       <p class="card-text"><?= $row['event_description'] ?></p>
