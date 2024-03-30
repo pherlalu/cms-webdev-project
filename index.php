@@ -147,7 +147,7 @@ include 'navbar.php';
       </h4>
 
       <div class="form-check d-flex justify-content-center mb-4">
-        <a class="btn btn-primary  btn-lg mb-4" href="events.php" role="button"> Sign up</a>
+        <a class="btn btn-primary  btn-lg mb-4" href="register.php" role="button"> Sign up</a>
       </div>
     </section>
   </div>
