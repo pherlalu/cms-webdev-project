@@ -63,7 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 ob_end_flush();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -72,6 +71,7 @@ ob_end_flush();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add New Event</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.tiny.cloud/1/jimddr1cbrdv8gayc9fr27ijy4hf0omx5h502auz20lj27jl/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
   <style>
     body {
       background: url('https://cdn.pixabay.com/photo/2013/02/05/15/18/landscape-78058_960_720.jpg') no-repeat center center fixed;
@@ -111,6 +111,22 @@ ob_end_flush();
                 <label for="event_description" class="form-label">Event Description</label>
                 <textarea class="form-control" id="event_description" name="event_description" rows="5" required></textarea>
               </div>
+              <script>
+                tinymce.init({
+                  selector: '#event_description',
+                  height: 300,
+                  plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount'
+                  ],
+                  toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat | help',
+                  content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                });
+              </script>
               <div class="mb-3">
                 <label for="event_distance" class="form-label">Event Distance (in miles)</label>
                 <select class="form-control form-control-lg custom-select" id="event_distance" name="event_distance" required>
@@ -137,7 +153,6 @@ ob_end_flush();
       </div>
     </div>
   </div>
-
 </body>
 
 </html>

@@ -40,6 +40,7 @@ if (isset($_GET['id'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit Event</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.tiny.cloud/1/jimddr1cbrdv8gayc9fr27ijy4hf0omx5h502auz20lj27jl/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
   <style>
     body {
       background: url('https://cdn.pixabay.com/photo/2013/02/05/15/18/landscape-78058_960_720.jpg') no-repeat center center fixed;
@@ -89,14 +90,32 @@ if (isset($_GET['id'])) {
           <div class="mb-3">
             <label for="event_description" class="form-label">Event Description</label>
             <textarea class="form-control" id="event_description" name="event_description" rows="4" required><?= isset($event['event_description']) ? $event['event_description'] : ''; ?></textarea>
+            <script>
+              tinymce.init({
+                selector: '#event_description',
+                height: 300,
+                plugins: [
+                  'advlist autolink lists link image charmap print preview anchor',
+                  'searchreplace visualblocks code fullscreen',
+                  'insertdatetime media table paste code help wordcount'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                  'bold italic backcolor | alignleft aligncenter ' +
+                  'alignright alignjustify | bullist numlist outdent indent | ' +
+                  'removeformat | help',
+                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+              });
+            </script>
           </div>
           <div class="mb-3">
             <label for="event_distance" class="form-label">Event Distance (in miles)</label>
             <select class="form-control form-control-lg custom-select" id="event_distance" name="event_distance" required>
               <option value="5K" <?= ($event['event_distance'] === '5K') ? 'selected' : ''; ?>>5K</option>
               <option value="10K" <?= ($event['event_distance'] === '10K') ? 'selected' : ''; ?>>10K</option>
-              <option value="Half Marathon" <?= ($event['event_distance'] === 'Half Marathon') ? 'selected' : ''; ?>>Half Marathon</option>
-              <option value="Marathon" <?= ($event['event_distance'] === 'Marathon') ? 'selected' : ''; ?>>Marathon</option>
+              <option value="Half Marathon" <?= ($event['event_distance'] === 'Half Marathon') ? 'selected' : ''; ?>>
+                Half Marathon</option>
+              <option value="Marathon" <?= ($event['event_distance'] === 'Marathon') ? 'selected' : ''; ?>>Marathon
+              </option>
             </select>
           </div>
           <div class="mb-3">
