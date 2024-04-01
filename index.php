@@ -64,10 +64,15 @@ include 'navbar.php';
           <h4><strong>Why do people run marathons?</strong></h4>
           <p>By Anne McCarthy, Features correspondent, @annemitchmcc</p>
           <p class="text-muted">
-            Marathoning has come a long way since. The winner ran a time of 2:58:50 – nowadays this would be a respectable time for an amateur, but it's almost an hour slower than the fastest runners today. We also now understand a great deal more about the science of long-distance running, from its health impacts to the psychological motivations.</p>
+            Marathoning has come a long way since. The winner ran a time of 2:58:50 – nowadays this would be a
+            respectable time for an amateur, but it's almost an hour slower than the fastest runners today. We also now
+            understand a great deal more about the science of long-distance running, from its health impacts to the
+            psychological motivations.</p>
 
           <p class="text-muted">
-            With no hopes of winning a gold medal or getting one's name etched in sport history books, some may wonder why people run marathons at all. The training requires a major commitment of time, energy and sweat, and the races can be gruelling.
+            With no hopes of winning a gold medal or getting one's name etched in sport history books, some may wonder
+            why people run marathons at all. The training requires a major commitment of time, energy and sweat, and the
+            races can be gruelling.
           </p>
 
           <a href="https://www.bbc.com/future/article/20210929-why-do-people-run-marathons">
@@ -95,7 +100,9 @@ include 'navbar.php';
             <div class="card-body">
               <h5 class="card-title">The Biggest Marathon</h5>
               <p class="card-text">
-                In November 2016, 51,388 runners from over 120 countries finished the New York Marathon, making it the record holder for most participants in a race. It also gained an astronomical 18 million impressions on Facebook.
+                In November 2016, 51,388 runners from over 120 countries finished the New York Marathon, making it the
+                record holder for most participants in a race. It also gained an astronomical 18 million impressions on
+                Facebook.
               </p>
               <a href="https://www.popsugar.co.uk/fitness/Surprising-Facts-Trivia-About-Marathon-Running-43411669" class="btn btn-primary">See More</a>
             </div>
@@ -113,7 +120,9 @@ include 'navbar.php';
             <div class="card-body">
               <h5 class="card-title">The Coldest Marathon Ever</h5>
               <p class="card-text">
-                Russian jeweller Boris Fyodorov completed his first marathon as a solo runner in -38°C on New Year's Day 2014. The beginner completed his 26.2 miles in just over 5 hours, in the town of Oymyakon, Russia, which is the coldest settlement on the planet.
+                Russian jeweller Boris Fyodorov completed his first marathon as a solo runner in -38°C on New Year's Day
+                2014. The beginner completed his 26.2 miles in just over 5 hours, in the town of Oymyakon, Russia, which
+                is the coldest settlement on the planet.
               </p>
               <a href="https://www.popsugar.co.uk/fitness/Surprising-Facts-Trivia-About-Marathon-Running-43411669" class="btn btn-primary">See More</a>
             </div>
@@ -131,7 +140,9 @@ include 'navbar.php';
             <div class="card-body">
               <h5 class="card-title">The Calories Burnt During a Marathon</h5>
               <p class="card-text">
-                The number of calories burnt while running varies slightly for individuals, as weight, gender, and speed all play a role. But, it's widely understood that you burn up to 100 calories per mile, which means you'll burn a whopping 2,620 calories during a marathon!
+                The number of calories burnt while running varies slightly for individuals, as weight, gender, and speed
+                all play a role. But, it's widely understood that you burn up to 100 calories per mile, which means
+                you'll burn a whopping 2,620 calories during a marathon!
               </p>
               <a href="https://www.popsugar.co.uk/fitness/Surprising-Facts-Trivia-About-Marathon-Running-43411669" class="btn btn-primary">See More</a>
             </div>
