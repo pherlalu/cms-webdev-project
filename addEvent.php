@@ -23,9 +23,9 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] != 1) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   // Sanitize and validate
   $event_name = filter_input(INPUT_POST, 'event_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-  $event_date = isset($_POST['event_date']) ? date('Y-m-d', strtotime($_POST['event_date'])) : null;
+  $event_date = isset($_POST['event_date']) ? date("Y-m-d H:i:s", strtotime($_POST['event_date'])) : null;
   $event_location = filter_input(INPUT_POST, 'event_location',  FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-  $event_description = filter_input(INPUT_POST, 'event_description',  FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+  $event_description = htmlspecialchars($_POST['event_description'], ENT_QUOTES, 'UTF-8');
   $event_distance = filter_input(INPUT_POST, 'event_distance', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
   $event_image_url = filter_input(INPUT_POST, 'event_image_url', FILTER_SANITIZE_URL);
 
@@ -100,8 +100,8 @@ ob_end_flush();
                 <input type="text" class="form-control" id="event_name" name="event_name" required>
               </div>
               <div class="mb-3">
-                <label for="event_date" class="form-label">Event Date</label>
-                <input type="date" class="form-control" id="event_date" name="event_date" required>
+                <label for="event_date" class="form-label">Event Date and Start Time</label>
+                <input type="datetime-local" class="form-control" id="event_date" name="event_date" required>
               </div>
               <div class="mb-3">
                 <label for="event_location" class="form-label">Event Location</label>
@@ -109,7 +109,7 @@ ob_end_flush();
               </div>
               <div class="mb-3">
                 <label for="event_description" class="form-label">Event Description</label>
-                <textarea class="form-control" id="event_description" name="event_description" rows="5" required></textarea>
+                <textarea class="form-control" id="event_description" name="event_description" rows="5"></textarea>
               </div>
               <script>
                 tinymce.init({
@@ -124,7 +124,9 @@ ob_end_flush();
                     'bold italic backcolor | alignleft aligncenter ' +
                     'alignright alignjustify | bullist numlist outdent indent | ' +
                     'removeformat | help',
-                  content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                  content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                  convert_urls: false,
+                  entities: "3"
                 });
               </script>
               <div class="mb-3">

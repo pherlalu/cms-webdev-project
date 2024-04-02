@@ -96,13 +96,13 @@ $totalPages = ceil($total / $limit);
   <div class="container">
     <table>
       <tbody>
-        <?php if ($count > 0) : ?>
+        <?php if ($total > 0) : ?>
         <tr>
           <td colspan="2">
             <div class="d-flex justify-content-between align-items-center mb-3" aria-label="Page navigation example">
               <div class="text-left">
                 <p class="lead m-0">
-                  <b><?= $count ?></b> Event Results Found
+                  There are a total of <b><?= $total ?></b> event results found.
                 </p>
               </div>
               <div class="text-right">
@@ -148,7 +148,8 @@ $totalPages = ceil($total / $limit);
                   </div>
                 </div>
                 <div class="col-md-2 d-flex align-items-center">
-                  <button class="btn btn-outline-primary">Race Details</button>
+                  <button class="btn btn-outline-primary"
+                    onclick="location.href='race_details.php?event_id=<?= $row['event_id']; ?>';">Race Details</button>
                 </div>
               </div>
             </div>

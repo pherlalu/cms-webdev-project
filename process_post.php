@@ -4,9 +4,9 @@ include 'db_connect.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // Sanitize user input to escape HTML entities and filter out dangerous characters.
   $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
-  $event_date = isset($_POST['event_date']) ? date('Y-m-d', strtotime($_POST['event_date'])) : null;
+  $event_date = isset($_POST['event_date']) ? date("Y-m-d H:i:s", strtotime($_POST['event_date'])) : null;
   $event_location = filter_input(INPUT_POST, 'event_location', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-  $event_description = filter_input(INPUT_POST, 'event_description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+  $event_description = strip_tags($_POST['event_description']);
   $event_distance = filter_input(INPUT_POST, 'event_distance', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
   // Query to get distance_id from distances table based on distance_type

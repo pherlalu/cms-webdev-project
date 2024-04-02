@@ -58,13 +58,13 @@ $runevents = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <table class="table table-striped table-hover">
       <thead class="thead-dark">
         <tr>
-          <th scope="col" class="col-1">#</th>
-          <th scope="col" class="col-2">Event Name</th>
-          <th scope="col" class="col-1">Event Location</th>
+          <th scope="col" class="col-0.5">#</th>
+          <th scope="col" class="col-1.5">Event Name</th>
+          <th scope="col" class="col-1">Location</th>
           <th scope="col" class="col-2">Event Description</th>
-          <th scope="col" class="col-1">Event Distance</th>
-          <th scope="col" class="col-1">Event Date</th>
-          <th scope="col" class="col-1">Event Cover Image</th>
+          <th scope="col" class="col-1.5">Distance</th>
+          <th scope="col" class="col-1.5">Event Date and Time</th>
+          <th scope="col" class="col-1">Cover Image</th>
           <th scope="col" class="col-2">Actions</th>
         </tr>
       </thead>
@@ -75,7 +75,8 @@ $runevents = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <th scope="row"><?= $i++; ?></th>
             <td><?= htmlspecialchars($runevent['event_name']); ?></td>
             <td><?= htmlspecialchars($runevent['event_location']); ?></td>
-            <td> <!-- displayed content is truncated to 100 characters. -->
+            <td>
+              <!-- displayed content is truncated to 100 characters. -->
               <?php if (strlen($runevent['event_description']) > 100) : ?>
                 <?= substr($runevent['event_description'], 0, 100) ?>...
               <?php else : ?>
@@ -83,7 +84,7 @@ $runevents = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <?php endif ?>
             </td>
             <td><?= htmlspecialchars($runevent['event_distance']); ?></td>
-            <td><?= date("F d, Y", strtotime($runevent['event_date'])) ?></td>
+            <td><?= date("F d, Y H:i", strtotime($runevent['event_date'])) ?></td>
             <td>
               <img src="<?= $runevent['event_image_url'] ?>" alt="Event Image" style="max-width: 100px;">
             </td>
@@ -106,8 +107,6 @@ $runevents = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <a href="addEvent.php" class="btn btn-success mt-3">Add New Event</a>
     </div>
   </div>
-
-
   <?php include 'footer.php'; ?>
 </body>
 
