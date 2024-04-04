@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $event_name = filter_input(INPUT_POST, 'event_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
   $event_date = isset($_POST['event_date']) ? date("Y-m-d H:i:s", strtotime($_POST['event_date'])) : null;
   $event_location = filter_input(INPUT_POST, 'event_location',  FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-  $event_description = htmlspecialchars($_POST['event_description'], ENT_QUOTES, 'UTF-8');
+  $event_description = htmlspecialchars(strip_tags($_POST['event_description']), ENT_QUOTES, 'UTF-8');
   $event_distance = filter_input(INPUT_POST, 'event_distance', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
   $event_image_url = filter_input(INPUT_POST, 'event_image_url', FILTER_SANITIZE_URL);
 
@@ -125,8 +125,6 @@ ob_end_flush();
                     'alignright alignjustify | bullist numlist outdent indent | ' +
                     'removeformat | help',
                   content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-                  convert_urls: false,
-                  entities: "3"
                 });
               </script>
               <div class="mb-3">
