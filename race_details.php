@@ -138,7 +138,7 @@ ob_end_flush();
       <div class="col-md-6 mt-5">
         <h3 class="display-6 mb-4">About the event</h3>
         <p class="lead">
-          <?= $event['event_description'] ?>
+          <?= htmlspecialchars_decode($event['event_description'], ENT_QUOTES) ?>
         </p>
         <div class="col-md-6 mt-5">
           <h3 class="display-6 mb-4">Race Details:</h3>
@@ -177,6 +177,7 @@ ob_end_flush();
 
     <div class="container mt-5">
       <div class="row d-flex align-items-center">
+        <hr>
         <div class="col-md-6 mx-auto mt-5">
           <h3 class="display-6 text-center">Reviews:</h3>
           <div class="reviews-container text-center">
@@ -190,52 +191,56 @@ ob_end_flush();
                 <?php if ($userID == 0) : ?>
                   <div class="form-group">
                     <label for="review-name">Name:</label>
-                    <input type="text" class="form-control" id="review-name" name="review-name" placeholder="Enter your name" required>
+                    <input type="text" class="form-control" id="review-name" name="review-name" placeholder="Enter your name.." required>
                   </div>
                 <?php endif; ?>
 
                 <div class="form-group">
                   <label for="review-comment">Comment:</label>
-                  <textarea class="form-control" id="review-comment" name="review-comment" rows="3" required></textarea>
+                  <textarea class="form-control" id="review-comment" name="review-comment" placeholder="Share your experience.." rows="3" required></textarea>
                 </div>
-
-
-
                 <div class="form-group">
                   <img src="captcha_image.php" alt="CAPTCHA" id="captcha-image" class="img-fluid rounded" style="height: 50px; border: 1px solid black; margin-top: 10px;">
-
-
                   <p class="text-danger">
                     <?= !empty($messageError) ? $messageError : "" ?>
                   </p>
                 </div>
                 <div class="form-group">
                   <label for="captcha-input">Enter the CAPTCHA text:</label>
-                  <input type="text" class="form-control" id="captcha-input" name="captcha-input" required>
+                  <input type="text" class="form-control" id="captcha-input" placeholder="Enter the CAPTCHA code above.." name="captcha-input" required>
                 </div>
                 <input type="hidden" name="event_id" value="<?php echo $event['event_id']; ?>">
-                <button type="submit" name="submit-review" class="btn btn-primary mt-3">Submit</button>
+                <button type="submit" name="submit-review" class="btn btn-primary mt-3 mb-5">Submit</button>
               </form>
 
-              <div class="media mt-5 mb-4">
-                <?php foreach ($comments as $comment) : ?>
-                  <img src='https://source.unsplash.com/random/50x50?profile' alt='Reviewer Avatar' class='mr-3 rounded-circle'>
-                  <div class='media-body'>
 
-                    <h5 class='mt-0 mb-1'><?= htmlspecialchars($comment['name']) ?></h5>
-                    <div class="review-item">
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="far fa-star"></i>
-                    </div>
-                    <p><?= htmlspecialchars($comment['comment_text']) ?></p>
-                  </div>
-                <?php endforeach; ?>
-              </div>
             </div>
           </div>
+        </div>
+        <hr>
+        <div class="media  mb-4">
+          <?php foreach ($comments as $comment) : ?>
+            <div class="card mt-5 mb-4">
+              <div class="card-body">
+                <div class="media">
+                  <img src='https://source.unsplash.com/random/50x50?profile' alt='Reviewer Avatar' class='mr-3 rounded-circle'>
+                  <div class='media-body'>
+                    <h5 class='mt-0 mb-1'><?= htmlspecialchars($comment['name']) ?></h5>
+                    <div class="review-item">
+                      <?php for ($i = 0; $i < 5; $i++) : ?>
+                        <i class="fas fa-star"></i>
+                      <?php endfor; ?>
+                      <?php for ($i = 5; $i < 5; $i++) : ?>
+                        <i class="far fa-star"></i>
+                      <?php endfor; ?>
+                    </div>
+                    <p><?= htmlspecialchars($comment['comment_text']) ?></p>
+                    <p><?= date("F d, Y", strtotime($comment['comment_date'])) ?></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <?php endforeach; ?>
         </div>
       </div>
     </div>

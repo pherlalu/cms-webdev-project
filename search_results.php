@@ -141,7 +141,7 @@ $totalPages = ceil($total / $limit);
                         <?= substr($row['event_description'], 0, 150) ?>
                         <span>...</span>
                         <?php else : ?>
-                        <?= $row['event_description'] ?>
+                        <?= htmlspecialchars_decode($row['event_description'], ENT_QUOTES) ?>
                         <?php endif ?>
                       </div>
                     </div>
