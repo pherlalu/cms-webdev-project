@@ -76,3 +76,21 @@ function validateCaptcha($captchaInput)
     return false;
   }
 }
+
+function file_is_an_image($temporary_path, $new_path)
+{
+  $allowed_mime_types      = ['image/gif', 'image/jpeg', 'image/png'];
+  $allowed_file_extensions = ['gif', 'jpg', 'jpeg', 'png'];
+
+  $actual_file_extension   = pathinfo($new_path, PATHINFO_EXTENSION);
+  $image_info = getimagesize($temporary_path);
+  $actual_mime_type = null;
+  if ($image_info !== false) {
+    $actual_mime_type = $image_info['mime'];
+  }
+
+  $file_extension_is_valid = in_array($actual_file_extension, $allowed_file_extensions);
+  $mime_type_is_valid      = in_array($actual_mime_type, $allowed_mime_types);
+
+  return $file_extension_is_valid && $mime_type_is_valid;
+}

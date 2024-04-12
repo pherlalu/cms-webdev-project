@@ -86,8 +86,8 @@ $runevents = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <td><?= htmlspecialchars($runevent['event_distance']); ?></td>
             <td><?= date("F d, Y H:i", strtotime($runevent['event_date'])) ?></td>
             <td>
-              <img src="<?= $runevent['event_image_url'] ?>" alt="Event Image" style="max-width: 100px;">
-            </td>
+              <img src="<?= empty($runevent['event_image_url']) ? 'assets/default/picture-not-available.jpg' : $runevent['event_image_url']  ?>" alt="Event Image" style="max-width: 100px;">
+
             <td class="align-middle">
               <div class="btn-group" role="group" aria-label="Event Actions">
                 <form action="<?= $_SERVER['PHP_SELF']; ?>" method="post">

@@ -12,6 +12,7 @@ ob_start();
 
 include 'navbar.php';
 include 'db_connect.php';
+include 'functions.php';
 
 // Check if the user is an admin
 if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] != 1) {
@@ -21,47 +22,77 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] != 1) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  // Sanitize and validate
-  $event_name = filter_input(INPUT_POST, 'event_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-  $event_date = isset($_POST['event_date']) ? date("Y-m-d H:i:s", strtotime($_POST['event_date'])) : null;
-  $event_location = filter_input(INPUT_POST, 'event_location',  FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-  // $event_description = htmlspecialchars($_POST['event_description'], ENT_QUOTES, 'UTF-8');
-  $event_description = $_POST['event_description'];
-  $event_distance = filter_input(INPUT_POST, 'event_distance', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-  $event_image_url = filter_input(INPUT_POST, 'event_image_url', FILTER_SANITIZE_URL);
+  try {
+    // Sanitize and validate
+    $event_name = filter_input(INPUT_POST, 'event_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $event_date = isset($_POST['event_date']) ? date("Y-m-d H:i:s", strtotime($_POST['event_date'])) : null;
+    $event_location = filter_input(INPUT_POST, 'event_location', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $event_description = $_POST['event_description'];
+    $event_distance = filter_input(INPUT_POST, 'event_distance', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $event_image_url = filter_input(INPUT_POST, 'event_image_url', FILTER_SANITIZE_URL);
+    $event_image = filter_input(INPUT_POST, 'event_image', FILTER_SANITIZE_URL);
 
-  // Query to get distance_id from distances table based on distance_type
-  $distance_query = "SELECT distance_id FROM distances WHERE distance_type = :event_distance";
-  $distance_stmt = $conn->prepare($distance_query);
-  $distance_stmt->bindParam(':event_distance', $event_distance);
-  $distance_stmt->execute();
-  $distance_result = $distance_stmt->fetch();
+    // Query to get distance_id from distances table based on distance_type
+    $distance_query = "SELECT distance_id FROM distances WHERE distance_type = :event_distance";
+    $distance_stmt = $conn->prepare($distance_query);
+    $distance_stmt->bindParam(':event_distance', $event_distance);
+    $distance_stmt->execute();
+    $distance_result = $distance_stmt->fetch();
 
-  if ($distance_result) {
-    $distance_id = $distance_result['distance_id'];
+    if ($distance_result) {
+      $distance_id = $distance_result['distance_id'];
 
-    // Build the parameterized SQL query and bind to the above sanitized values.
-    $query = "INSERT INTO runevents (event_name, event_date, event_location, event_description, event_distance, event_image_url, distance_id) VALUES (:event_name, :event_date, :event_location, :event_description, :event_distance, :event_image_url, :distance_id)";
-    $statement = $conn->prepare($query);
+      // Handle file upload for album cover
+      $event_image_path = '';
+      if (isset($_FILES['event_image']) && $_FILES['event_image']['error'] === UPLOAD_ERR_OK) {
+        $upload_dir = 'uploads/'; // Directory to store uploaded images
+        $file_name = $_FILES['event_image']['name'];
+        $file_tmp = $_FILES['event_image']['tmp_name'];
+        $event_image_path = $upload_dir . $file_name;
 
-    // Bind values to the parameters
-    $statement->bindValue(':event_name', $event_name);
-    $statement->bindValue(':event_date', $event_date);
-    $statement->bindValue(':event_location', $event_location);
-    $statement->bindValue(':event_description', $event_description);
-    $statement->bindValue(':event_distance', $event_distance);
-    $statement->bindValue(':event_image_url', $event_image_url);
-    $statement->bindValue(':distance_id', $distance_id, PDO::PARAM_INT); // Bind distance_id
+        // Check if the uploaded file is an image
+        if (file_is_an_image($file_tmp, $event_image_path)) {
+          move_uploaded_file($file_tmp, $event_image_path);
+        } else {
+          throw new Exception("The uploaded file is not a valid image.");
+        }
+      } else if (!empty($event_image_url)) {
+        $event_image_path = $event_image_url;
+      } else {
+        $event_image_path = 'assets/default/picture-not-available.jpg';
+      }
 
-    // Execute the INSERT.
-    $statement->execute();
+      // Build the parameterized SQL query and bind to the above sanitized values.
+      $query = "INSERT INTO runevents (event_name, event_date, event_location, event_description, event_distance, event_image_url, distance_id) VALUES (:event_name, :event_date, :event_location, :event_description, :event_distance, :event_image, :distance_id)";
+      $statement = $conn->prepare($query);
 
-    // Redirect the user to the manage events page
-    header('Location: manageEvents.php');
-    exit();
+      // Bind values to the parameters
+      $statement->bindValue(':event_name', $event_name);
+      $statement->bindValue(':event_date', $event_date);
+      $statement->bindValue(':event_location', $event_location);
+      $statement->bindValue(':event_description', $event_description);
+      $statement->bindValue(':event_distance', $event_distance);
+      $statement->bindValue(':event_image', $event_image_path);
+      $statement->bindValue(':distance_id', $distance_id, PDO::PARAM_INT); // Bind distance_id
+
+      // Execute the INSERT.
+      $statement->execute();
+
+      // Redirect the user to the manage events page
+      header('Location: manageEvents.php');
+      exit();
+    }
+  } catch (PDOException $e) {
+    // Handle database errors
+    error_log("Error: " . $e->getMessage());
+  } catch (Exception $e) {
+    // Handle other exceptions
+    error_log("Error: " . $e->getMessage());
+  } finally {
+    // Close the database connection
+    $conn = null;
   }
 }
-
 ob_end_flush();
 ?>
 <!DOCTYPE html>
@@ -72,18 +103,17 @@ ob_end_flush();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add New Event</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.tiny.cloud/1/jimddr1cbrdv8gayc9fr27ijy4hf0omx5h502auz20lj27jl/tinymce/5/tinymce.min.js"
-    referrerpolicy="origin"></script>
+  <script src="https://cdn.tiny.cloud/1/jimddr1cbrdv8gayc9fr27ijy4hf0omx5h502auz20lj27jl/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
   <style>
-  body {
-    background: url('https://cdn.pixabay.com/photo/2013/02/05/15/18/landscape-78058_960_720.jpg') no-repeat center center fixed;
-    background-size: cover;
-    height: 100vh;
-  }
+    body {
+      background: url('https://cdn.pixabay.com/photo/2013/02/05/15/18/landscape-78058_960_720.jpg') no-repeat center center fixed;
+      background-size: cover;
+      height: 100vh;
+    }
 
-  .card {
-    background-color: rgba(255, 255, 255, 0.5);
-  }
+    .card {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
   </style>
 </head>
 
@@ -114,25 +144,24 @@ ob_end_flush();
                 <textarea class="form-control" id="event_description" name="event_description" rows="5"></textarea>
               </div>
               <script>
-              tinymce.init({
-                selector: '#event_description',
-                height: 300,
-                plugins: [
-                  'advlist autolink lists link image charmap print preview anchor',
-                  'searchreplace visualblocks code fullscreen',
-                  'insertdatetime media table paste code help wordcount'
-                ],
-                toolbar: 'undo redo | formatselect | ' +
-                  'bold italic backcolor | alignleft aligncenter ' +
-                  'alignright alignjustify | bullist numlist outdent indent | ' +
-                  'removeformat | help',
-                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-              });
+                tinymce.init({
+                  selector: '#event_description',
+                  height: 300,
+                  plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount'
+                  ],
+                  toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat | help',
+                  content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                });
               </script>
               <div class="mb-3">
                 <label for="event_distance" class="form-label">Event Distance (in miles)</label>
-                <select class="form-control form-control-lg custom-select" id="event_distance" name="event_distance"
-                  required>
+                <select class="form-control form-control-lg custom-select" id="event_distance" name="event_distance" required>
                   <option value="5K">5K</option>
                   <option value="10K">10K</option>
                   <option value="Half Marathon">Half Marathon</option>
@@ -141,21 +170,34 @@ ob_end_flush();
               </div>
               <div class="mb-3">
                 <label for="event_image_url" class="form-label">Event Image URL</label>
-                <input type="text" class="form-control" id="event_image_url" name="event_image_url" required>
+                <input type="text" class="form-control" id="event_image_url" name="event_image_url">
               </div>
+
+
               <div class="mb-3">
                 <label for="event_image" class="form-label">Upload Event Image</label>
                 <input type="file" class="form-control" id="event_image" name="event_image">
+                <?php if (isset($_FILES['event_image']) && $_FILES['event_image']['error'] === UPLOAD_ERR_NO_FILE) : ?>
+                  <p class="text-danger mt-1">Please select an image file.</p>
+                <?php elseif (isset($_FILES['event_image']) && $_FILES['event_image']['error'] !== UPLOAD_ERR_OK) : ?>
+                  <p class="text-danger mt-1">An error occurred while uploading the file.</p>
+                <?php elseif (isset($_FILES['event_image']) && !file_is_an_image($_FILES['event_image']['tmp_name'], '')) : ?>
+                  <p class="text-danger mt-1">The uploaded file is not a valid image.</p>
+                <?php endif; ?>
               </div>
               <div class="d-grid">
                 <button type="submit" class="btn btn-primary">Submit</button>
               </div>
-            </form>
           </div>
+
+
+          </form>
         </div>
+
       </div>
     </div>
   </div>
+
 </body>
 
 </html>
