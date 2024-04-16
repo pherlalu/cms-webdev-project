@@ -2,7 +2,7 @@
 include 'db_connect.php';
 include 'functions.php';
 
-
+session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   try {
     // Sanitize user input to escape HTML entities and filter out dangerous characters.
@@ -33,10 +33,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $file_tmp = $_FILES['event_image']['tmp_name'];
         $event_image_path = $upload_dir . $file_name;
         $error_upload = '';
+        // Extract filename and extension
+        $file_name1 = pathinfo($file_name, PATHINFO_FILENAME);
+        $file_ext2 = pathinfo($file_name, PATHINFO_EXTENSION);
 
         // Check if the uploaded file is an image
         if (file_is_an_image($file_tmp, $event_image_path)) {
           move_uploaded_file($file_tmp, $event_image_path);
+
+          // Resized Max Width 400px: original_filename_medium.ext
+          $medium_image = $upload_dir . $file_name1 . '_resize.' . $file_ext2;
+          resize_img($event_image_path, $medium_image, 100);
         } else {
           throw new Exception("The uploaded file is not a valid image.");
         }
@@ -46,21 +53,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $event_image_path = 'assets/default/picture-not-available.jpg';
       }
 
+
+
       // Handle image deletion if the delete checkbox is checked
-      if ((isset($_POST['event_image']) && $_POST['event_image'] == 1)) {
-
-        unlink($events['event_image_url']);
-
-        $query = "UPDATE runevents SET event_image_url = '' WHERE event_id =?";
-        $stmt = $conn->prepare($query);
-        $stmt->execute(array($id));
-
-        $query = "SELECT * FROM runevents WHERE event_id = ?";
+      if (isset($_POST['event_image']) && $_POST['event_image'] == 1) {
+        $query = "SELECT event_image_url FROM runevents WHERE event_id = ?";
         $stmt = $conn->prepare($query);
         $stmt->execute(array($id));
         $events = $stmt->fetch(PDO::FETCH_ASSOC);
-      }
 
+        if ($events && isset($events['event_image_url'])) {
+          $filename = $events['event_image_url'];
+          // Extract filename and extension
+          $file_name1 = pathinfo($filename, PATHINFO_FILENAME);
+          $file_ext2 = pathinfo($filename, PATHINFO_EXTENSION);
+          $filename_resize = 'uploads/' . $file_name1 . '_resize.' . $file_ext2;
+
+          echo $file_name;
+          echo $filename_resize;
+          if (file_exists($filename) || file_exists($filename_resize)) {
+            unlink($filename);
+            unlink($filename_resize);
+
+            $query = "UPDATE runevents SET event_image_url = NULL WHERE event_id = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->execute(array($id));
+
+            $query = "SELECT * FROM runevents WHERE event_id = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->execute(array($id));
+            $events = $stmt->fetch(PDO::FETCH_ASSOC);
+          }
+        }
+      }
 
       // Update query
       $query = "UPDATE runevents SET event_name = :event_name, event_date = :event_date, event_location = :event_location, event_description = :event_description, event_image_url = :event_image_url, event_distance = :event_distance, distance_id = :distance_id WHERE event_id = :id";
@@ -93,7 +118,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     error_log("Error: " . $e->getMessage());
   } catch (Exception $e) {
     // Handle other exceptions
-    error_log("Error: " . $e->getMessage());
+    $_SESSION['error_message'] = $e->getMessage();
+    header("Location: editEvent.php?id=$id");
+    exit;
   } finally {
     // Close the database connection
     $conn = null;

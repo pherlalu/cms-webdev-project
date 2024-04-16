@@ -71,34 +71,37 @@ $runevents = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <tbody>
         <?php $i = 1;
         foreach ($runevents as $runevent) : ?>
-          <tr>
-            <th scope="row"><?= $i++; ?></th>
-            <td><?= htmlspecialchars($runevent['event_name']); ?></td>
-            <td><?= htmlspecialchars($runevent['event_location']); ?></td>
-            <td>
-              <!-- displayed content is truncated to 100 characters. -->
-              <?php if (strlen($runevent['event_description']) > 100) : ?>
-                <?= substr($runevent['event_description'], 0, 100) ?>...
-              <?php else : ?>
-                <?= $runevent['event_description'] ?>
-              <?php endif ?>
-            </td>
-            <td><?= htmlspecialchars($runevent['event_distance']); ?></td>
-            <td><?= date("F d, Y H:i", strtotime($runevent['event_date'])) ?></td>
-            <td>
-              <img src="<?= empty($runevent['event_image_url']) ? 'assets/default/picture-not-available.jpg' : $runevent['event_image_url']  ?>" alt="Event Image" style="max-width: 100px;">
+        <tr>
+          <th scope="row"><?= $i++; ?></th>
+          <td><?= htmlspecialchars($runevent['event_name']); ?></td>
+          <td><?= htmlspecialchars($runevent['event_location']); ?></td>
+          <td>
+            <!-- displayed content is truncated to 100 characters. -->
+            <?php if (strlen($runevent['event_description']) > 100) : ?>
+            <?= substr($runevent['event_description'], 0, 100) ?>...
+            <?php else : ?>
+            <?= $runevent['event_description'] ?>
+            <?php endif ?>
+          </td>
+          <td><?= htmlspecialchars($runevent['event_distance']); ?></td>
+          <td><?= date("F d, Y H:i", strtotime($runevent['event_date'])) ?></td>
+          <td>
+            <img
+              src="<?= empty($runevent['event_image_url']) ? 'assets/default/picture-not-available.jpg' : $runevent['event_image_url']  ?>"
+              alt="Event Image" style="max-width: 100px;">
 
-            <td class="align-middle">
-              <div class="btn-group" role="group" aria-label="Event Actions">
-                <form action="<?= $_SERVER['PHP_SELF']; ?>" method="post">
-                  <input type="hidden" name="id" value="<?= $runevent['event_id']; ?>">
-                  <button type="button" class="btn btn-outline-primary edit-button"><a href="editEvent.php?id=<?= $runevent['event_id']; ?> ">Edit</a></button>
-                  <input type="submit" name="delete_event" value="Delete" class="btn btn-outline-danger">
-                </form>
+          <td class="align-middle">
+            <div class="btn-group" role="group" aria-label="Event Actions">
+              <form action="<?= $_SERVER['PHP_SELF']; ?>" method="post">
+                <input type="hidden" name="id" value="<?= $runevent['event_id']; ?>">
+                <button type="button" class="btn btn-outline-primary edit-button"><a
+                    href="editEvent.php?id=<?= $runevent['event_id']; ?> ">Edit</a></button>
+                <input type="submit" name="delete_event" value="Delete" class="btn btn-outline-danger">
+              </form>
 
-              </div>
-            </td>
-          </tr>
+            </div>
+          </td>
+        </tr>
         <?php endforeach; ?>
       </tbody>
     </table>

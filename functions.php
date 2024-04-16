@@ -1,5 +1,6 @@
 <?php
-
+require('./dependencies/php-image-resize-master/lib/ImageResize.php');
+require('./dependencies/php-image-resize-master/lib/ImageResizeException.php');
 include 'db_connect.php';
 
 function getCurrentUserID()
@@ -77,6 +78,18 @@ function validateCaptcha($captchaInput)
   }
 }
 
+function file_upload_path($original_filename, $upload_subfolder_name = 'uploads')
+{
+  $current_folder = dirname(__FILE__);
+
+  // Build an array of paths segment names to be joins using OS specific slashes.
+  $path_segments = [$current_folder, $upload_subfolder_name, basename($original_filename)];
+
+  // The DIRECTORY_SEPARATOR constant is OS specific.
+  return join(DIRECTORY_SEPARATOR, $path_segments);
+}
+
+
 function file_is_an_image($temporary_path, $new_path)
 {
   $allowed_mime_types      = ['image/gif', 'image/jpeg', 'image/png'];
@@ -93,4 +106,17 @@ function file_is_an_image($temporary_path, $new_path)
   $mime_type_is_valid      = in_array($actual_mime_type, $allowed_mime_types);
 
   return $file_extension_is_valid && $mime_type_is_valid;
+}
+
+// Resize image function using ImageResize library
+function resize_img($src_path, $target_path, $width)
+{
+
+  try {
+    $image = new \Gumlet\ImageResize($src_path);
+    $image->resizeToWidth($width);
+    $image->save($target_path);
+  } catch (Exception $e) {
+    echo 'An error occur: ',  $e->getMessage(), "\n";
+  }
 }

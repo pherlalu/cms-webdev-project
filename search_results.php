@@ -119,7 +119,11 @@ $totalPages = ceil($total / $limit);
             <div class="card mb-3 shadow" style="width: 100%;">
               <div class="row g-0">
                 <div class="col-md-4" style="max-width: 300px;">
-                  <img src="<?= $row['event_image_url'] ?>" class="rounded mx-auto d-block w-100 h-100" alt="...">
+                  <?php $file_name = pathinfo($row['event_image_url'], PATHINFO_FILENAME); ?>
+                  <?php $file_ext = pathinfo($row['event_image_url'], PATHINFO_EXTENSION); ?>
+                  <img
+                    src="<?= filter_var($row['event_image_url'], FILTER_VALIDATE_URL) ? $row['event_image_url'] : 'uploads/' . $file_name . "_resize." . $file_ext  ?>"
+                    class="rounded mx-auto d-block w-100 h-100" alt="...">
                 </div>
                 <div class="col-md-7">
                   <div class="card-body">

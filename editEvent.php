@@ -149,6 +149,12 @@ if (isset($_GET['id'])) {
               <label class="form-check-label" for="event_image">Add/Change Event Cover Photo</label>
               <div class="mb-3">
                 <input type="file" class="form-control-file" name="event_image" id="event_image">
+
+                <?php if (isset($_SESSION['error_message'])) : ?>
+                <p class="alert alert-danger mt-2"><?= htmlspecialchars($_SESSION['error_message']); ?></p>
+                <?php unset($_SESSION['error_message']); ?>
+                <?php endif; ?>
+
               </div>
 
               <div class="d-grid">
@@ -160,7 +166,6 @@ if (isset($_GET['id'])) {
       </div>
     </div>
   </div>
-
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

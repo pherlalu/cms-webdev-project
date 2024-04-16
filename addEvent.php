@@ -49,10 +49,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $file_name = $_FILES['event_image']['name'];
         $file_tmp = $_FILES['event_image']['tmp_name'];
         $event_image_path = $upload_dir . $file_name;
+        // Extract filename and extension
+        $file_name1 = pathinfo($file_name, PATHINFO_FILENAME);
+        $file_ext2 = pathinfo($file_name, PATHINFO_EXTENSION);
 
         // Check if the uploaded file is an image
         if (file_is_an_image($file_tmp, $event_image_path)) {
           move_uploaded_file($file_tmp, $event_image_path);
+
+          // Resized Max Width 400px: original_filename_medium.ext
+          $medium_image = $upload_dir . $file_name1 . '_resize.' . $file_ext2;
+          resize_img($event_image_path, $medium_image, 100);
         } else {
           throw new Exception("The uploaded file is not a valid image.");
         }
@@ -178,11 +185,11 @@ ob_end_flush();
                 <label for="event_image" class="form-label">Upload Event Image</label>
                 <input type="file" class="form-control" id="event_image" name="event_image">
                 <?php if (isset($_FILES['event_image']) && $_FILES['event_image']['error'] === UPLOAD_ERR_NO_FILE) : ?>
-                  <p class="text-danger mt-1">Please select an image file.</p>
+                  <p class="alert alert-danger mt-2">>Please select an image file.</p>
                 <?php elseif (isset($_FILES['event_image']) && $_FILES['event_image']['error'] !== UPLOAD_ERR_OK) : ?>
-                  <p class="text-danger mt-1">An error occurred while uploading the file.</p>
+                  <p class="alert alert-danger mt-2">>An error occurred while uploading the file.</p>
                 <?php elseif (isset($_FILES['event_image']) && !file_is_an_image($_FILES['event_image']['tmp_name'], '')) : ?>
-                  <p class="text-danger mt-1">The uploaded file is not a valid image.</p>
+                  <p class="alert alert-danger mt-2">The uploaded file is not a valid image.</p>
                 <?php endif; ?>
               </div>
               <div class="d-grid">
