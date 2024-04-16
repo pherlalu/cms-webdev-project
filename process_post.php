@@ -10,10 +10,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $event_name = filter_input(INPUT_POST, 'event_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $event_date = isset($_POST['event_date']) ? date("Y-m-d H:i:s", strtotime($_POST['event_date'])) : null;
     $event_location = filter_input(INPUT_POST, 'event_location', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $event_description = strip_tags($_POST['event_description']);
     $event_distance = filter_input(INPUT_POST, 'event_distance', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $event_image_url = filter_input(INPUT_POST, 'event_image_url', FILTER_SANITIZE_URL);
     $event_image = filter_input(INPUT_POST, 'event_image', FILTER_SANITIZE_URL);
+    // $event_description = filter_input(INPUT_POST, 'event_description', FILTER_SANITIZE_URL);
+    $event_description = strip_tags($_POST['event_description']);
 
     // Query to get distance_id from distances table based on distance_type
     $distance_query = "SELECT distance_id FROM distances WHERE distance_type = :event_distance";

@@ -21,7 +21,7 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] != 1) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   // Sanitize and validate the username
-  $username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
+  $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
   if (empty($username)) {
     die('Error: Username is required.');
   }
