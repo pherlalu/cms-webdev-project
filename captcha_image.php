@@ -1,9 +1,15 @@
 <?php
+
+/*******w******** 
+    
+    Name: Steffi Ann Tanya Amper
+    Created: March 17, 2024
+    Updated: April 16, 2024
+    Description: Captcha Image
+
+ ****************/
 session_start();
-
-
 $captchaImage = generateCaptchaString();
-
 header('Content-Type: image/png');
 imagepng($captchaImage);
 imagedestroy($captchaImage);

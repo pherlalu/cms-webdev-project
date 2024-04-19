@@ -1,4 +1,13 @@
 <?php
+
+/*******w******** 
+    
+    Name: Steffi Ann Tanya Amper
+    Created: March 17, 2024
+    Updated: April 16, 2024
+    Description: Edit Event page
+
+ ****************/
 require('./dependencies/php-image-resize-master/lib/ImageResize.php');
 require('./dependencies/php-image-resize-master/lib/ImageResizeException.php');
 include 'db_connect.php';

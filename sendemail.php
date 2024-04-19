@@ -1,5 +1,14 @@
 <?php
 
+/*******w******** 
+    
+    Name: Steffi Ann Tanya Amper
+    Created: March 17, 2024
+    Updated: April 16, 2024
+    Description: Edit Event page
+
+ ****************/
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;

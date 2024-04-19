@@ -8,7 +8,6 @@
     Description: Index page
 
  ****************/
-
 include 'navbar.php';
 ?>
 

@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($distance_result) {
       $distance_id = $distance_result['distance_id'];
 
-      // Handle file upload for album cover
+      // Handle file upload for  cover
       $event_image_path = '';
       if (isset($_FILES['event_image']) && $_FILES['event_image']['error'] === UPLOAD_ERR_OK) {
         $upload_dir = 'uploads/'; // Directory to store uploaded images
@@ -110,17 +110,18 @@ ob_end_flush();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add New Event</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.tiny.cloud/1/jimddr1cbrdv8gayc9fr27ijy4hf0omx5h502auz20lj27jl/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+  <script src="https://cdn.tiny.cloud/1/jimddr1cbrdv8gayc9fr27ijy4hf0omx5h502auz20lj27jl/tinymce/5/tinymce.min.js"
+    referrerpolicy="origin"></script>
   <style>
-    body {
-      background: url('https://cdn.pixabay.com/photo/2013/02/05/15/18/landscape-78058_960_720.jpg') no-repeat center center fixed;
-      background-size: cover;
-      height: 100vh;
-    }
+  body {
+    background: url('https://cdn.pixabay.com/photo/2013/02/05/15/18/landscape-78058_960_720.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+  }
 
-    .card {
-      background-color: rgba(255, 255, 255, 0.5);
-    }
+  .card {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
   </style>
 </head>
 
@@ -151,24 +152,25 @@ ob_end_flush();
                 <textarea class="form-control" id="event_description" name="event_description" rows="5"></textarea>
               </div>
               <script>
-                tinymce.init({
-                  selector: '#event_description',
-                  height: 300,
-                  plugins: [
-                    'advlist autolink lists link image charmap print preview anchor',
-                    'searchreplace visualblocks code fullscreen',
-                    'insertdatetime media table paste code help wordcount'
-                  ],
-                  toolbar: 'undo redo | formatselect | ' +
-                    'bold italic backcolor | alignleft aligncenter ' +
-                    'alignright alignjustify | bullist numlist outdent indent | ' +
-                    'removeformat | help',
-                  content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-                });
+              tinymce.init({
+                selector: '#event_description',
+                height: 300,
+                plugins: [
+                  'advlist autolink lists link image charmap print preview anchor',
+                  'searchreplace visualblocks code fullscreen',
+                  'insertdatetime media table paste code help wordcount'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                  'bold italic backcolor | alignleft aligncenter ' +
+                  'alignright alignjustify | bullist numlist outdent indent | ' +
+                  'removeformat | help',
+                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+              });
               </script>
               <div class="mb-3">
                 <label for="event_distance" class="form-label">Event Distance (in miles)</label>
-                <select class="form-control form-control-lg custom-select" id="event_distance" name="event_distance" required>
+                <select class="form-control form-control-lg custom-select" id="event_distance" name="event_distance"
+                  required>
                   <option value="5K">5K</option>
                   <option value="10K">10K</option>
                   <option value="Half Marathon">Half Marathon</option>
@@ -185,11 +187,11 @@ ob_end_flush();
                 <label for="event_image" class="form-label">Upload Event Image</label>
                 <input type="file" class="form-control" id="event_image" name="event_image">
                 <?php if (isset($_FILES['event_image']) && $_FILES['event_image']['error'] === UPLOAD_ERR_NO_FILE) : ?>
-                  <p class="alert alert-danger mt-2">>Please select an image file.</p>
+                <p class="alert alert-danger mt-2">>Please select an image file.</p>
                 <?php elseif (isset($_FILES['event_image']) && $_FILES['event_image']['error'] !== UPLOAD_ERR_OK) : ?>
-                  <p class="alert alert-danger mt-2">>An error occurred while uploading the file.</p>
+                <p class="alert alert-danger mt-2">>An error occurred while uploading the file.</p>
                 <?php elseif (isset($_FILES['event_image']) && !file_is_an_image($_FILES['event_image']['tmp_name'], '')) : ?>
-                  <p class="alert alert-danger mt-2">The uploaded file is not a valid image.</p>
+                <p class="alert alert-danger mt-2">The uploaded file is not a valid image.</p>
                 <?php endif; ?>
               </div>
               <div class="d-grid">

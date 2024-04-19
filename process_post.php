@@ -1,4 +1,13 @@
 <?php
+
+/*******w******** 
+    
+    Name: Steffi Ann Tanya Amper
+    Created: March 17, 2024
+    Updated: April 16, 2024
+    Description: Edit Event page
+
+ ****************/
 include 'db_connect.php';
 include 'functions.php';
 

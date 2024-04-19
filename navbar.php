@@ -9,7 +9,6 @@
     Description: Navigation Bar page
 
  ****************/
-
 session_start();
 include 'db_connect.php';
 
